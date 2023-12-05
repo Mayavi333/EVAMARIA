@@ -16,6 +16,11 @@ from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
 
+from aiohttp import web
+from plugins import web_server
+from os import environ
+PORT = environ.get("PORT", "8080")
+
 class Bot(Client):
 
     def __init__(self):
@@ -44,6 +49,11 @@ class Bot(Client):
         logging.info(LOG_STR)
         await self.send_message(chat_id=LOG_CHANNEL, text="Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !")
 
+        app = web.AppRunner(await web_server())
+        await app.setup()
+        bind_address = "0.0.0.0"
+        await web.TCPSite(app, bind_address, PORT).start()
+        
     async def stop(self, *args):
         await super().stop()
         logging.info("Bot stopped. Bye.")
