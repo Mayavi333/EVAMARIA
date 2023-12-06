@@ -10,7 +10,7 @@ from Script import script
 import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
-from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, DELETE_CHANNELS, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
+from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, DELETE_CHANNELS, FILE_FORWARD, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
     SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters, enums
@@ -361,15 +361,33 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 return
             else:
                 d1=await client.send_cached_media(
-                    chat_id=query.from_user.id,
+                    chat_id=FILE_FORWARD,
                     file_id=file_id,
                     caption=f_caption,
                     protect_content=True if ident == "filep" else False 
                 )
+                Joel_tgx = await query.message.reply_text(
+                        script.FILE_MSG.format(query.from_user.mention, title, size),
+                        parse_mode=enums.ParseMode.HTML,
+                        reply_markup=InlineKeyboardMarkup(
+                            [
+                                [
+                                    InlineKeyboardButton('📥 𝖣𝗈𝗐𝗇𝗅𝗈𝖺𝖽 𝖫𝗂𝗇𝗄 📥 ', url=file_send.link)
+                                ], [
+                                InlineKeyboardButton("⚠️ 𝖢𝖺𝗇'𝗍 𝖠𝖼𝖼𝖾𝗌𝗌 ❓ 𝖢𝗅𝗂𝖼𝗄 𝖧𝖾𝗋𝖾 ⚠️", url=(FILE_FORWARD))
+                            ]
+                            ]
+                        )
+                )
                 
-                await query.answer('Check PM, I have sent files in pm', show_alert=True)
+                if settings['auto_delete']:
+                    await asyncio.sleep(600)
+                    await Joel_tgx.delete()
+                    await d1.ddelete()
+                else:
+                    await query.answer('Check PM, I have sent files in pm', show_alert=True)
                 await asyncio.sleep(5)
-                await d1.delete
+                await d1.ddelete()
         except UserIsBlocked:
             await query.answer('Unblock the bot mahn !', show_alert=True)
         except PeerIdInvalid:
