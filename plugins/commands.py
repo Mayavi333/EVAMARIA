@@ -69,7 +69,7 @@ async def start(client, message):
             InlineKeyboardButton('🪄sᴇᴀʀᴄʜ🪄', switch_inline_query_current_chat=''),
             InlineKeyboardButton('📣ᴜᴩᴅᴀᴛᴇꜱ📣', url='https://t.me/KOMBOTZZ')
             ],[
-            InlineKeyboardButton('🌝ᴏᴡɴᴇʀ ɪɴғᴏ🌝', url='https://t.me/luttappimovie')
+            InlineKeyboardButton('🌝ᴏᴡɴᴇʀ ɪɴғᴏ🌝', callback_data="owner_info")
             ],[
             InlineKeyboardButton('⚙️ʜᴇʟᴩ⚙️', callback_data='help'),
             InlineKeyboardButton('📍ᴀʙᴏᴜᴛ📍', callback_data='about')
@@ -117,7 +117,7 @@ async def start(client, message):
             InlineKeyboardButton('🪄sᴇᴀʀᴄʜ🪄', switch_inline_query_current_chat=''),
             InlineKeyboardButton('📣ᴜᴩᴅᴀᴛᴇꜱ📣', url='https://t.me/KOMBOTZZ')
             ],[
-            InlineKeyboardButton('🌝ᴏᴡɴᴇʀ ɪɴғᴏ🌝', url='https://t.me/luttappimovie')
+            InlineKeyboardButton('🌝ᴏᴡɴᴇʀ ɪɴғᴏ🌝', callback_data="owner_info")
             ],[
             InlineKeyboardButton('⚙️ʜᴇʟᴩ⚙️', callback_data='help'),
             InlineKeyboardButton('📍ᴀʙᴏᴜᴛ📍', callback_data='about')
