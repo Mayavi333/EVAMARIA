@@ -356,44 +356,34 @@ async def cb_handler(client: Client, query: CallbackQuery):
             if AUTH_CHANNEL and not await is_subscribed(client, query):
                 await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
                 return
-            elif settings['botpm']:
-                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            elif P_TTI_SHOW_OFF:
+                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={file_id}")
                 return
             else:
-                d1=await client.send_cached_media(
+                send_file = await client.send_cached_media(
                     chat_id=REDIRECT_ID,
                     file_id=file_id,
-                    caption=f_caption,
-                    protect_content=True if ident == "filep" else False 
+                    caption=f_caption
                 )
-                Joel_tgx = await query.message.reply_text(
-                        script.FILE_MSG.format(query.from_user.mention, title, size),
-                        parse_mode=enums.ParseMode.HTML,
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                    InlineKeyboardButton('📥 𝖣𝗈𝗐𝗇𝗅𝗈𝖺𝖽 𝖫𝗂𝗇𝗄 📥 ', url=file_send.link)
-                                ], [
-                                InlineKeyboardButton("⚠️ 𝖢𝖺𝗇'𝗍 𝖠𝖼𝖼𝖾𝗌𝗌 ❓ 𝖢𝗅𝗂𝖼𝗄 𝖧𝖾𝗋𝖾 ⚠️", url=(REDIRECT_LINK))
-                            ]
-                            ]
-                        )
+                msm = await query.message.reply_text(
+                    text = f"Hi click the below link and download the movies🍿\n\nERROR? Click the join channel button and try again \n\n{send_file.link}",
+                    reply_markup = reply_markup
                 )
-                
-                if settings['auto_delete']:
-                    await asyncio.sleep(600)
-                    await Joel_tgx.delete()
-                    await d1.ddelete()
-                else:
-                    await query.answer('Check PM, I have sent files in pm', show_alert=True)
-                await asyncio.sleep(5)
-                await d1.ddelete()
+                await asyncio.sleep(600)
+                await send_file.delete()
+                await msm.delete()
+        else:
+            await query.answer('Check PM, I have sent files in pm', show_alert=True)
+            await asyncio.sleep(5)
+            await d1.ddelete()
+            
         except UserIsBlocked:
-            await query.answer('Unblock the bot mahn !', show_alert=True)
+            await query.answer('Unblock the bot mahn !',show_alert = True)
         except PeerIdInvalid:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={file_id}")
         except Exception as e:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={file_id}")
+        
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
             await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒", show_alert=True)
