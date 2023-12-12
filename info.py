@@ -40,6 +40,7 @@ DATABASE_NAME = environ.get('DATABASE_NAME', "Rajappan")
 COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
+AUTO_FFILTER = is_enabled((environ.get('AUTO_FFILTER', "True")), True)
 DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '').split()]
 REDIRECT_LINK = environ.get('REDIRECT_LINK',"")
 REDIRECT_ID = int(environ.get('REDIRECT_ID', 0))
