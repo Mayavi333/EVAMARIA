@@ -1,6 +1,6 @@
 # https://github.com/odysseusmax/animated-lamp/blob/master/bot/database/database.py
 import motor.motor_asyncio
-from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT
+from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, AUTO_FFILTER, PROTECT_CONTENT
 
 class Database:
     
@@ -108,6 +108,7 @@ class Database:
     
     async def get_settings(self, id):
         default = {
+            'auto_ffilter: AUTO_FFILTER,
             'button': SINGLE_BUTTON,
             'botpm': P_TTI_SHOW_OFF,
             'file_secure': PROTECT_CONTENT,
