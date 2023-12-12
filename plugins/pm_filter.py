@@ -11,7 +11,7 @@ import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
 from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, DELETE_CHANNELS, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
-    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE
+    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE, AUTO_FFILTER
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -36,8 +36,13 @@ SPELL_CHECK = {}
 async def give_filter(client, message):
     k = await manual_filters(client, message)
     if k == False:
-        await auto_filter(client, message)
-
+        settings = await get_settings(message.chat.id)
+        content = message.text
+        if content.startswith("/") or content.startswith("#"): return 
+        if settings["auto_ffilter"]:
+            await auto_filter(client, message)
+        else:
+            return
 
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
@@ -689,6 +694,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
         if settings is not None:
             buttons = [
+                [
+                    InlineKeyboardButton('𝗔𝗨𝗧𝗢 𝗕𝗨𝗧𝗧𝗢𝗡',
+                                         callback_data=f'setgs#auto_ffilter#{settings["auto_ffilter"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes' if settings["auto_ffilter"] else '❌ No',
+                                         callback_data=f'setgs#auto_ffilter#{settings["auto_ffilter"]}#{str(grp_id)}')
+                ],
                 [
                     InlineKeyboardButton('𝗙𝗜𝗟𝗧𝗘𝗥 𝗕𝗨𝗧𝗧𝗢𝗡',
                                          callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}'),
